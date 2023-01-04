@@ -3,7 +3,7 @@
 
 #include "vec3.h"
 #include "hittable.h"
-#include "util.h"
+#include "utility.h"
 #include "material.h"
 #include "hittable.h"
 
@@ -37,7 +37,6 @@ bool sphere::hit(const ray& r, double t_min, double t_max, hit_record& rec) cons
 			return false;
 	}
 
-	// ?
 	rec.t = root;
 	rec.p = r.at(rec.t);
 	vec3 outward_normal = (rec.p - center) / radius;

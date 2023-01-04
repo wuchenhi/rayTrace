@@ -1,7 +1,7 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
-#include "util.h"
+#include "utility.h"
 #include "hittable.h"
 
 class material {
@@ -9,7 +9,7 @@ public:
     virtual bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered) const = 0;
 };
 
-
+// 朗伯材料
 class lambertian : public material {
 public:
     lambertian(const color& a) : albedo(a) {}
@@ -60,10 +60,11 @@ public:
 
 public:
     color albedo;
-    double fuzz;
+    double fuzz;// 模糊
 };
 
 
+// 玻璃
 class dielectric : public material {
 public:
     dielectric(double index_of_refraction) : ir(index_of_refraction) {}
@@ -94,6 +95,7 @@ public:
     double ir; // Index of Refraction
 
 private:
+    //现实世界中的玻璃, 发生折射的概率会随着入射角而改变——从一个很狭窄的角度去看玻璃窗, 它会变成一面镜子
     static double reflectance(double cosine, double ref_idx) {
         // Use Schlick's approximation for reflectance.
         auto r0 = (1 - ref_idx) / (1 + ref_idx);

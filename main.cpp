@@ -1,4 +1,4 @@
-﻿#include "util.h"
+﻿#include "utility.h"
 
 #include "camera.h"
 #include "color.h"
@@ -16,7 +16,7 @@ color ray_color(const ray& r, const hittable& world, int depth) {
     if (depth <= 0)
         return color(0, 0, 0);
 
-    if (world.hit(r, 0.001, infinity, rec)) {
+    if (world.hit(r, 0.001, infinity, rec)) { //有些物体反射的光线会在t=0时再次击中自己,所以忽略掉0附近的一部分范围, 防止物体发出的光线再次与自己相交
         // 漫反射
         ray scattered;
         color attenuation;
@@ -30,7 +30,7 @@ color ray_color(const ray& r, const hittable& world, int depth) {
     return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
 }
 
-hittable_list random_scene() {
+hittable_list myscene() {
     hittable_list world;
 
     auto ground_material = make_shared<lambertian>(color(0.5, 0.5, 0.5));
@@ -83,14 +83,14 @@ int main() {
 
     // Image
  
-    const auto aspect_ratio = 16.0 / 9.0;
-    const int image_width = 400;
+    const auto aspect_ratio = 3.0 / 2.0;
+    const int image_width = 1200;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
-    const int samples_per_pixel = 100;
-    const int max_depth = 50;
+    const int samples_per_pixel = 50; // 抗锯齿
+    const int max_depth = 50;         // 递归次数
     // World
 
-    auto world = random_scene();
+    auto world = myscene();
 
     // Camera
     point3 lookfrom(13, 2, 3);

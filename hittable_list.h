@@ -2,7 +2,7 @@
 #define HITTABLE_LIST_H
 
 #include "hittable.h"
-#include "util.h"
+#include "utility.h"
 
 #include <memory>
 #include <vector>

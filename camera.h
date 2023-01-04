@@ -1,13 +1,13 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "util.h"
+#include "utility.h"
 
 class camera {
 public:
-    // 将放置相机的位置称为lookfrom，并将我们查看的点称为 lookat
+    // 将放置相机的位置称为lookfrom，并将查看的点称为 lookat
     camera(point3 lookfrom, point3 lookat, vec3 vup, // vup和w来确定u v
-           double vfov, double aspect_ratio,      // vertical field-of-view in degrees aperture  aspect_ratio 宽高比
+           double vfov, double aspect_ratio,      // vertical field-of-view in degrees视场 aspect_ratio 宽高比
            double aperture, double focus_dist) {  //aperture 光圈直径 focus_dist 焦距
         auto theta = degrees_to_radians(vfov);
         auto h = tan(theta/2);
