@@ -14,3 +14,9 @@ make
 3、ray.h 定义ray，包含起点，方向和时间；
 
 4、hittable.h是对可命中对象的抽象类，hittable_list.h是可命中对象的列表；
+
+5、camera.h是相机类；
+
+6、material.h定义简单的材质；
+
+7、utility.h工具函数。
