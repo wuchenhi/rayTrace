@@ -1,2 +1,4 @@
+.vscode
 ./main
 ./image.ppm
+./stb_image.h
