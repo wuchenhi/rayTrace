@@ -7,10 +7,10 @@
 class material;
 
 struct hit_record {
-	point3 p; // 相交的点
+	point3 p;   // 相交的点
 	vec3 normal;// 相交的射线
 	shared_ptr<material> mat_ptr;
-	double t;// 单位法线
+	double t;   // 单位法线
 	bool front_face;//正面
 
 	inline void set_face_normal(const ray& r, const vec3& outward_normal) {

@@ -3,7 +3,6 @@
 
 #include "hittable.h"
 #include "utility.h"
-
 #include <memory>
 #include <vector>
 
