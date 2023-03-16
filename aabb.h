@@ -26,7 +26,6 @@ public:
     //     return true;
     // }
 
-    // ”≈ªØ∫Û
     bool hit(const ray& r, double t_min, double t_max) const {
     for (int a = 0; a < 3; a++) {
         auto invD = 1.0f / r.direction()[a];
