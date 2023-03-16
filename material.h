@@ -3,16 +3,23 @@
 
 #include "utility.h"
 #include "hittable.h"
+#include "texture.h"
 
 class material {
 public:
+    // 默认不发光
+    virtual color emitted(double u, double v, const point3& p) const {
+        return color(0,0,0);
+    }
+    // 散射
     virtual bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered) const = 0;
 };
 
 // 朗伯材料
 class lambertian : public material {
 public:
-    lambertian(const color& a) : albedo(a) {}
+    lambertian(const color& a) : albedo(make_shared<solid_color>(a)) {}
+    lambertian(shared_ptr<texture> a) : albedo(a) {}
 
     virtual bool scatter(
         const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
@@ -24,12 +31,13 @@ public:
             scatter_direction = rec.normal;
 
         scattered = ray(rec.p, scatter_direction, r_in.time());
-        attenuation = albedo;
+        attenuation = albedo->value(rec.u, rec.v, rec.p);
         return true;
     }
 
 public:
-    color albedo;
+    // color albedo;
+    shared_ptr<texture> albedo;
 };
 
 // 反射
@@ -92,18 +100,56 @@ public:
     }
 
 public:
-    double ir; // Index of Refraction
+    double ir; // 折射率
 
 private:
     //现实世界中的玻璃, 发生折射的概率会随着入射角而改变——从一个很狭窄的角度去看玻璃窗, 它会变成一面镜子
     static double reflectance(double cosine, double ref_idx) {
-        // Use Schlick's approximation for reflectance.
+        // 使用Schlick近似值来计算反射率。
         auto r0 = (1 - ref_idx) / (1 + ref_idx);
         r0 = r0 * r0;
         return r0 + (1 - r0) * pow((1 - cosine), 5);
     }
 };
 
+// 发光材质
+class diffuse_light : public material {
+public:
+    diffuse_light(shared_ptr<texture> a) : emit(a) {}
+    diffuse_light(color c) : emit(make_shared<solid_color>(c)) {}
+    
+    // 不反射
+    virtual bool scatter(
+        const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
+    ) const override {
+        return false;
+    }
+    // 发光
+    virtual color emitted(double u, double v, const point3& p) const override {
+        return emit->value(u, v, p);
+    }
+
+public:
+    shared_ptr<texture> emit;
+};
+
+//各向同性，散射函数选取一个均匀的随机方向
+class isotropic : public material {
+public:
+    isotropic(color c) : albedo(make_shared<solid_color>(c)) {}
+    isotropic(shared_ptr<texture> a) : albedo(a) {}
+
+    virtual bool scatter(
+        const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
+    ) const override {
+        scattered = ray(rec.p, random_in_unit_sphere(), r_in.time());
+        attenuation = albedo->value(rec.u, rec.v, rec.p);
+        return true;
+    }
+
+public:
+    shared_ptr<texture> albedo;
+};
 
 #endif
 

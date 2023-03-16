@@ -7,6 +7,15 @@ make
 ./test > image.ppm
 ```
 
+功能实现：
+
+1、运动模糊；
+
+2、
+
+
+代码包括：
+
 1、vec3.h 包含定义了3维矢量类vec3，包括运算符重载、点乘、叉乘和使用函数；
 
 2、color.h 将单个像素的颜色写入std::ostream；
@@ -19,4 +28,4 @@ make
 
 6、material.h定义简单的材质；
 
-7、utility.h工具函数。
+7、utility.h工具函数；
