@@ -1,4 +1,4 @@
-./test
-./image.ppm
-./map.jpg
-./stb_image.h
+test
+image.ppm
+map.jpg
+stb_image.h
